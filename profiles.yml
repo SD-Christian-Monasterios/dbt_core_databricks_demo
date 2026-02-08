@@ -6,6 +6,6 @@ dbt_core_databricks_demo:
       http_path: /sql/1.0/warehouses/c4d20a2db40ba654
       schema: default
       threads: 1
-      token: TOKEN
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
       type: databricks
   target: dev
