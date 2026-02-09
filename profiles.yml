@@ -1,7 +1,15 @@
 dbt_core_databricks_demo:
   outputs:
     dev:
-      catalog: cmonasterios
+      catalog: cmonasterios_dbt_dev
+      host: dbc-56f60291-144c.cloud.databricks.com
+      http_path: /sql/1.0/warehouses/c4d20a2db40ba654
+      schema: default
+      threads: 1
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      type: databricks
+    prod:
+      catalog: cmonasterios_dbt_prod
       host: dbc-56f60291-144c.cloud.databricks.com
       http_path: /sql/1.0/warehouses/c4d20a2db40ba654
       schema: default
