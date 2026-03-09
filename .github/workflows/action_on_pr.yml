@@ -16,6 +16,9 @@ jobs:
   dbt-ci:
     runs-on: ubuntu-latest
 
+    env:
+      DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
