@@ -1,0 +1,39 @@
+name: dbt Core CI validation
+run-name: Validate dbt project on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'models/**'
+      - 'macros/**'
+      - 'tests/**'
+      - 'dbt_project.yml'
+      - 'packages.yml'
+
+jobs:
+  dbt-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dbt
+        run: |
+          pip install dbt-databricks
+
+      - name: Install dbt dependencies
+        run: dbt deps
+
+      - name: Parse dbt project
+        run: dbt parse
+
+      - name: Compile dbt project
+        run: dbt compile
