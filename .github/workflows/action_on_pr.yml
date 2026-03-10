@@ -16,9 +16,6 @@ jobs:
   dbt-ci:
     runs-on: ubuntu-latest
 
-    env:
-      DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -37,6 +34,10 @@ jobs:
 
       - name: Parse dbt project
         run: dbt parse
+        env:
+          DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
 
       - name: Compile dbt project
         run: dbt compile
+        env:
+          DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
