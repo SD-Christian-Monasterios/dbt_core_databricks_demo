@@ -12,6 +12,10 @@ on:
       - 'dbt_project.yml'
       - 'packages.yml'
 
+
+env:
+  DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
+
 jobs:
   dbt-ci:
     runs-on: ubuntu-latest
