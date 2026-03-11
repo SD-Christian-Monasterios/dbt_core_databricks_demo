@@ -37,6 +37,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   dbt_core_databricks_demo:
+    +catalog: cmonasterios_dbt_prod
+
     bronze:
       +materialized: table
       +schema: bronze
