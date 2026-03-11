@@ -1,7 +1,7 @@
 version: 2
 sources:
   - name: landing
-    database: "{{target.catalog}}"
+    database: cmonasterios_dbt_prod
     schema: landing
     tables:
       - name: orders
