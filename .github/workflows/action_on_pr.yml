@@ -34,6 +34,9 @@ jobs:
         run: |
           pip install dbt-databricks
 
+      - name: Debug repo structure
+        run: ls -R
+
       - name: Install dbt dependencies
         run: dbt deps
         working-directory: dbt
