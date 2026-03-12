@@ -35,12 +35,15 @@ jobs:
 
       - name: Install dbt dependencies
         run: dbt deps
+        working-directory: dbt
 
       - name: Parse dbt project
         run: dbt parse
+        working-directory: dbt
 
       - name: Compile dbt project
         run: dbt compile
+        working-directory: dbt
 
 #     Databricks Job Validation
 #      - name: Validate Databricks Asset Bundle
