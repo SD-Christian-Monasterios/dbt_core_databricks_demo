@@ -15,6 +15,7 @@ on:
 
 env:
   DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
+  DBT_PROFILES_DIR: ./dbt
 
 jobs:
   dbt-ci:
@@ -34,15 +35,15 @@ jobs:
           pip install dbt-databricks
 
       - name: Install dbt dependencies
-        run: dbt deps --profiles-dir .
+        run: dbt deps
         working-directory: dbt
 
       - name: Parse dbt project
-        run: dbt parse --profiles-dir .
+        run: dbt parse
         working-directory: dbt
 
       - name: Compile dbt project
-        run: dbt compile --profiles-dir .
+        run: dbt compile
         working-directory: dbt
 
 #     Databricks Job Validation
