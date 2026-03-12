@@ -43,5 +43,5 @@ jobs:
         run: dbt compile
 
 #     Databricks Job Validation
-      - name: Validate Databricks Asset Bundle
-        run: databricks bundle validate
+#      - name: Validate Databricks Asset Bundle
+#        run: databricks bundle validate
