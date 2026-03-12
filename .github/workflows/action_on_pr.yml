@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
-
+#     dbt validations
       - name: Install dbt
         run: |
           pip install dbt-databricks
@@ -41,3 +41,7 @@ jobs:
 
       - name: Compile dbt project
         run: dbt compile
+
+#     Databricks Job Validation
+      - name: Validate Databricks Asset Bundle
+        run: databricks bundle validate
