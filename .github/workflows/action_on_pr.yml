@@ -6,11 +6,11 @@ on:
     branches:
       - main
     paths:
-      - 'models/**'
-      - 'macros/**'
-      - 'tests/**'
-      - 'dbt_project.yml'
-      - 'packages.yml'
+      - 'dbt/models/**'
+      - 'dbt/macros/**'
+      - 'dbt/tests/**'
+      - 'dbt/dbt_project.yml'
+      - 'dbt/packages.yml'
 
 
 env:
