@@ -15,6 +15,8 @@ on:
 
 env:
   DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
+  DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+  DATABRICKS_HTTP_PATH: ${{ vars.DATABRICKS_HTTP_PATH }}
 
 jobs:
   dbt-ci:
@@ -41,8 +43,8 @@ jobs:
             target: dev
             outputs:
               dev:
-                host: dbc-56f60291-144c.cloud.databricks.com
-                http_path: /sql/1.0/warehouses/c4d20a2db40ba654
+                host: "$DATABRICKS_HOST"
+                http_path: "$DATABRICKS_HTTP_PATH"
                 schema: default
                 threads: 1
                 token: "{{ env_var('DATABRICKS_TOKEN') }}"
