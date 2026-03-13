@@ -41,7 +41,7 @@ jobs:
       - name: Create profiles.yml
         run: |
           mkdir -p ~/.dbt
-          cat <<EOF > ~/.dbt/profiles.yml
+          cat <<EOF > dbt/profiles.yml
           dbt_core_databricks_demo:
             target: dev
             outputs:
