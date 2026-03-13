@@ -31,6 +31,9 @@ jobs:
         with:
           python-version: "3.12"
 #     dbt validations
+      - name: pre check
+        run: cat ./dbt/packages.yml
+
       - name: Install dbt
         run: |
           pip install dbt-databricks
@@ -63,8 +66,8 @@ jobs:
         run: dbt compile
         working-directory: ./dbt
 
-      - name: Debug repo structure
-        run: ls -R
+      - name: post_check
+        run: cat ./dbt/packages.yml
 
 #     Databricks Job Validation
 #      - name: Validate Databricks Asset Bundle
