@@ -15,8 +15,8 @@ on:
 
 env:
   DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
-  DATABRICKS_HOST: ${{secrets.DATABRICKS_HOST}}
-  DATABRICKS_COMPUTE_PATH: ${{secrets.DATABRICKS_COMPUTE_PATH}}
+  DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+  DATABRICKS_HTTP_PATH: ${{ vars.DATABRICKS_HTTP_PATH }}
 
 jobs:
   dbt-ci:
@@ -43,8 +43,8 @@ jobs:
             target: dev
             outputs:
               dev:
-                host: "{{ env_var('DATABRICKS_HOST') }}"
-                http_path: "{{ env_var('DATABRICKS_COMPUTE_PATH') }}"
+                host: "$DATABRICKS_HOST"
+                http_path: "$DATABRICKS_HTTP_PATH"
                 schema: default
                 threads: 1
                 token: "{{ env_var('DATABRICKS_TOKEN') }}"
