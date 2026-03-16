@@ -1,7 +1,7 @@
  resources:
    jobs:
      dbt_demo_run:
-      name: dbt-demo-run
+      name: dbt-demo-job-run
       tasks:
         - task_key: job_for_dbt
           dbt_task:
