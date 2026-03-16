@@ -31,6 +31,9 @@ jobs:
         with:
           python-version: "3.12"
 #     dbt validations
+      - name: pre check
+        run: cat ./dbt/profiles.yml
+
       - name: Install dbt
         run: |
           pip install dbt-databricks
@@ -38,7 +41,7 @@ jobs:
       - name: Create profiles.yml
         run: |
           mkdir -p ~/.dbt
-          cat <<EOF > ~/.dbt/profiles.yml
+          cat <<EOF > dbt/profiles.yml
           dbt_core_databricks_demo:
             target: dev
             outputs:
@@ -62,6 +65,9 @@ jobs:
       - name: Compile dbt project
         run: dbt compile
         working-directory: ./dbt
+
+      - name: post_check
+        run: cat ./dbt/profiles.yml
 
 #     Databricks Job Validation
 #      - name: Validate Databricks Asset Bundle
