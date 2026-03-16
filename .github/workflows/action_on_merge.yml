@@ -1,0 +1,32 @@
+name: dbt Core CI validation
+run-name: Validate dbt project on Pull Request
+
+on:
+  push:
+    branches:
+      - main
+env:
+  DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
+  DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+
+jobs:
+  dbt-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Configure Databricks CLI
+        run: |
+          databricks auth login --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
+
+      - name: Validate bundle
+        run: databricks bundle validate
+        working-directory: dab
+
+
