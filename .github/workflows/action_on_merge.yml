@@ -1,4 +1,4 @@
-name: dbt Core CI validation
+name: dbt Core CICD validation
 run-name: Validate project on MERGE
 
 on:

@@ -2,7 +2,7 @@ bundle:
   name: dab-demo-dbt
 
 include:
-  - dab/resources/*.yml
+  - resources/*.yml
 
 workspace:
   host: https://dbc-56f60291-144c.cloud.databricks.com/
