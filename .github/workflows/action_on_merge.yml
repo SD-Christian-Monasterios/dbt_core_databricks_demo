@@ -1,5 +1,5 @@
 name: dbt Core CICD validation
-run-name: Validate project on MERGE
+run-name: Validate and deploy project
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   DATABRICKS_HOST: https://${{ vars.DATABRICKS_HOST }}
 
 jobs:
-  dbt-ci:
+  dbt-deploy:
     runs-on: ubuntu-latest
 
     steps:
