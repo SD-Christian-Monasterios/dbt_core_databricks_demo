@@ -4,6 +4,7 @@ run-name: Validate dbt project on Pull Request
 on:
   pull_request:
     branches:
+      - dev
       - main
     paths:
       - 'dbt/models/**'
@@ -20,6 +21,7 @@ env:
 
 jobs:
   dbt-ci:
+    name: dbt compile
     runs-on: ubuntu-latest
 
     steps:
@@ -59,3 +61,17 @@ jobs:
       - name: Compile dbt project
         run: dbt compile
         working-directory: ./dbt
+
+  bundle-validate:
+    name: Bundle validate (prod)
+    runs-on: ubuntu-latest
+    if: github.base_ref == 'main'    # solo corre cuando el PR apunta a main
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Bundle validate — prod
+        run: databricks bundle validate --target prod
+        working-directory: dab
