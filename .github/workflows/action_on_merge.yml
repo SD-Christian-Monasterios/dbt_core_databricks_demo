@@ -23,20 +23,25 @@ jobs:
         run: |
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 
-      - name: Set credentials
+      - name: Set credentials and variables
         run: |
           if [ "${{ github.ref_name }}" = "main" ]; then
             echo "BUNDLE_TARGET=prod" >> $GITHUB_ENV
             echo "DATABRICKS_HOST=https://${{ vars.DATABRICKS_HOST_PROD }}" >> $GITHUB_ENV
             echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD }}" >> $GITHUB_ENV
+            echo "WAREHOUSE_ID=${{ vars.WAREHOUSE_ID_PROD }}" >> $GITHUB_ENV
           else
             echo "BUNDLE_TARGET=dev" >> $GITHUB_ENV
             echo "DATABRICKS_HOST=https://${{ vars.DATABRICKS_HOST_DEV }}" >> $GITHUB_ENV
             echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_DEV }}" >> $GITHUB_ENV
+            echo "WAREHOUSE_ID=${{ vars.WAREHOUSE_ID_DEV }}" >> $GITHUB_ENV
           fi
 
       - name: Bundle validate
-        run: databricks bundle validate --target $BUNDLE_TARGET
+        run: |
+          databricks bundle validate --target $BUNDLE_TARGET \
+            --var="warehouse_id=$WAREHOUSE_ID" \
+            --var="git_url=${{ vars.GIT_URL }}"
         working-directory: dab
 
   bundle-deploy:
@@ -56,7 +61,10 @@ jobs:
           echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD }}" >> $GITHUB_ENV  
 
       - name: Bundle deploy — prod
-        run: databricks bundle deploy --target prod
+        run: |
+          databricks bundle deploy --target prod \
+            --var="warehouse_id=${{ vars.WAREHOUSE_ID_PROD }}" \
+            --var="git_url=${{ vars.GIT_URL }}"
         working-directory: dab
 
 
