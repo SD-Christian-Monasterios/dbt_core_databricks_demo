@@ -23,17 +23,22 @@ jobs:
         run: |
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 
-      - name: Set bundle target
+      - name: Set credentials
         run: |
           if [ "${{ github.ref_name }}" = "main" ]; then
             echo "BUNDLE_TARGET=prod" >> $GITHUB_ENV
+            echo "DATABRICKS_HOST=https://${{ vars.DATABRICKS_HOST_PROD }}" >> $GITHUB_ENV
+            echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD }}" >> $GITHUB_ENV
           else
             echo "BUNDLE_TARGET=dev" >> $GITHUB_ENV
+            echo "DATABRICKS_HOST=https://${{ vars.DATABRICKS_HOST_DEV }}" >> $GITHUB_ENV
+            echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_DEV }}" >> $GITHUB_ENV
           fi
 
       - name: Bundle validate
         run: databricks bundle validate --target $BUNDLE_TARGET
         working-directory: dab
+
   bundle-deploy:
     name: Bundle deploy (prod only)
     runs-on: ubuntu-latest
@@ -44,6 +49,11 @@ jobs:
 
       - name: Install Databricks CLI
         run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Set prod credentials
+        run: |
+          echo "DATABRICKS_HOST=https://${{ vars.DATABRICKS_HOST_PROD }}" >> $GITHUB_ENV
+          echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD }}" >> $GITHUB_ENV  
 
       - name: Bundle deploy — prod
         run: databricks bundle deploy --target prod
