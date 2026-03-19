@@ -12,6 +12,7 @@ on:
       - 'dbt/tests/**'
       - 'dbt/dbt_project.yml'
       - 'dbt/packages.yml'
+      - 'dab/**'
 
 
 env:
