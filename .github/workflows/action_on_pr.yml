@@ -14,12 +14,6 @@ on:
       - 'dbt/packages.yml'
       - 'dab/**'
 
-
-env:
-  DATABRICKS_TOKEN: ${{secrets.DATABRICKS_TOKEN}}
-  DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-  DATABRICKS_HTTP_PATH: ${{ vars.DATABRICKS_HTTP_PATH }}
-
 jobs:
   dbt-ci:
     name: dbt compile
@@ -38,21 +32,33 @@ jobs:
       - name: Install dbt
         run: |
           pip install dbt-databricks
+          
+
+      - name: Set dbt credentials
+        run: |
+          if [ "${{ github.base_ref }}" = "main" ]; then
+            echo "DATABRICKS_HOST=${{ vars.DATABRICKS_HOST_PROD }}" >> $GITHUB_ENV
+            echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD }}" >> $GITHUB_ENV
+            echo "DATABRICKS_HTTP_PATH=${{ vars.DATABRICKS_HTTP_PATH_PROD }}" >> $GITHUB_ENV
+          else
+            echo "DATABRICKS_HOST=${{ vars.DATABRICKS_HOST_DEV }}" >> $GITHUB_ENV
+            echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_DEV }}" >> $GITHUB_ENV
+            echo "DATABRICKS_HTTP_PATH=${{ vars.DATABRICKS_HTTP_PATH_DEV }}" >> $GITHUB_ENV
+          fi
 
       - name: Create profiles.yml
         run: |
-          mkdir -p ~/.dbt
           cat <<EOF > dbt/profiles.yml
           dbt_core_databricks_demo:
-            target: dev
+            target: ci
             outputs:
-              dev:
+              ci:
+                type: databricks
                 host: "$DATABRICKS_HOST"
                 http_path: "$DATABRICKS_HTTP_PATH"
+                token: "$DATABRICKS_TOKEN"
                 schema: default
-                threads: 1
-                token: "{{ env_var('DATABRICKS_TOKEN') }}"
-                type: databricks
+                threads: 4
           EOF
 
       - name: Install dbt dependencies
@@ -72,6 +78,11 @@ jobs:
 
       - name: Install Databricks CLI
         run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Set bundle credentials
+        run: |
+          echo "DATABRICKS_HOST=https://${{ vars.DATABRICKS_HOST_PROD }}" >> $GITHUB_ENV
+          echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD }}" >> $GITHUB_ENV
 
       - name: Bundle validate — prod
         run: databricks bundle validate --target prod
