@@ -4,13 +4,15 @@ run-name: Validate and deploy project
 on:
   push:
     branches:
+      - dev
       - main
 env:
   DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
   DATABRICKS_HOST: https://${{ vars.DATABRICKS_HOST }}
 
 jobs:
-  dbt-deploy:
+  bundle-validate:
+    name: Bundle Validate
     runs-on: ubuntu-latest
 
     steps:
@@ -21,11 +23,29 @@ jobs:
         run: |
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 
-      - name: Validate bundle
-        run: databricks bundle validate --target prod
-        working-directory: dab
+      - name: Set bundle target
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "BUNDLE_TARGET=prod" >> $GITHUB_ENV
+          else
+            echo "BUNDLE_TARGET=dev" >> $GITHUB_ENV
+          fi
 
-      - name: Validate deploy
+      - name: Bundle validate
+        run: databricks bundle validate --target $BUNDLE_TARGET
+        working-directory: dab
+  bundle-deploy:
+    name: Bundle deploy (prod only)
+    runs-on: ubuntu-latest
+    needs: bundle-validate
+    if: github.ref_name == 'main'    # solo corre en merge a main
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Bundle deploy — prod
         run: databricks bundle deploy --target prod
         working-directory: dab
 
