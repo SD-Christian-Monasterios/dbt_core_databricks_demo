@@ -2,6 +2,9 @@
    jobs:
      dbt_demo_run:
       name: dbt-demo-job-run
+      schedule:
+        quartz_cron_expression: "0 0 10 * * ?"
+        pause_status: "UNPAUSED"
       tasks:
         - task_key: job_for_dbt
           dbt_task:
