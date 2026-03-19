@@ -85,5 +85,8 @@ jobs:
           echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD }}" >> $GITHUB_ENV
 
       - name: Bundle validate — prod
-        run: databricks bundle validate --target prod
+        run: |
+          databricks bundle validate --target prod \
+            --var="warehouse_id=${{ vars.WAREHOUSE_ID_PROD }}" \
+            --var="git_url=${{ vars.GIT_URL }}"
         working-directory: dab
