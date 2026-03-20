@@ -13,7 +13,7 @@
             commands:
               - dbt deps
               - dbt compile
-            warehouse_id: c4d20a2db40ba654
+            warehouse_id: ${var.warehouse_id}
             source: GIT
           environment_key: job_for_dbt_environment
       git_source:
