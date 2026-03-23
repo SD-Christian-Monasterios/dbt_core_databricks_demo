@@ -1,4 +1,4 @@
 select
 *
 from 
-{{source("landing","reviews")}}
+{{source("landingg","reviews")}}
