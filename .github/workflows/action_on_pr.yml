@@ -1,5 +1,5 @@
-name: dbt Core CI validation
-run-name: Validate dbt project on Pull Request
+name: CI
+run-name: "CI · PR #${{ github.event.number }} by @${{ github.actor }}"
 
 on:
   pull_request:
