@@ -1,5 +1,5 @@
 name: CI
-run-name: "CI · PR #${{ github.event.number }} by @${{ github.actor }}"
+run-name: "CI · PR #${{ github.event.number }} · ${{ github.head_ref }} → ${{ github.base_ref }} · by @${{ github.actor }}"
 
 on:
   pull_request:
@@ -69,10 +69,11 @@ jobs:
         run: dbt compile
         working-directory: ./dbt
 
+  # Databricks Steps
   bundle-validate:
     name: Bundle validate (prod)
     runs-on: ubuntu-latest
-    if: github.base_ref == 'main'    # solo corre cuando el PR apunta a main
+    if: github.base_ref == 'main'
     steps:
       - uses: actions/checkout@v4
 
