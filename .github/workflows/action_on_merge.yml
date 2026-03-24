@@ -6,9 +6,10 @@ on:
     branches:
       - dev
       - main
-env:
-  DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-  DATABRICKS_HOST: https://${{ vars.DATABRICKS_HOST }}
+
+    paths:
+      - 'dbt/**'
+      - 'dab/**'
 
 jobs:
   bundle-validate:
