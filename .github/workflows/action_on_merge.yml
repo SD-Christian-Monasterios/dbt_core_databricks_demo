@@ -1,5 +1,5 @@
-name: dbt Core CICD validation
-run-name: Validate and deploy project
+name: CD
+run-name: "CD · Merge to ${{ github.ref_name }} · by @${{ github.actor }}"
 
 on:
   push:

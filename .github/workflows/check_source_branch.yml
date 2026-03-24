@@ -1,5 +1,5 @@
-name: Enforce source branch
-run-name: Enforce source branch on PR to main
+name: CI / Branch Protection
+run-name: "CI · Branch Protection · PR #${{ github.event.number }} · ${{ github.head_ref }} → main · by @${{ github.actor }}"
 on:
   pull_request:
     branches:
