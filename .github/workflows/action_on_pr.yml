@@ -6,13 +6,6 @@ on:
     branches:
       - dev
       - main
-    paths:
-      - 'dbt/models/**'
-      - 'dbt/macros/**'
-      - 'dbt/tests/**'
-      - 'dbt/dbt_project.yml'
-      - 'dbt/packages.yml'
-      - 'dab/**'
 
 jobs:
   dbt-ci:
