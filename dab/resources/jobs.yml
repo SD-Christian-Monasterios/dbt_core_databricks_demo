@@ -3,7 +3,7 @@
      dbt_demo_run:
       name: dbt-demo-job-run
       schedule:
-        quartz_cron_expression: "0 0 99 * * ?"
+        quartz_cron_expression: "22 44 10 0 -99 * * ?"
         timezone_id: "UTC"
         pause_status: "UNPAUSED"
       tasks:
